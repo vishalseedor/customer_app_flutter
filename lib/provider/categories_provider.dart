@@ -81,6 +81,7 @@ class CategoriesProvider with ChangeNotifier {
           _loadedProduct.add(Categories(
               id: extractedData[i]['id'].toString(),
               title: extractedData[i]['name'].toString(),
+             
               isSelected: false,
               image: image ?? base64Decode(customBase64)));
         }

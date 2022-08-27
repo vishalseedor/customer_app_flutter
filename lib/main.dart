@@ -11,8 +11,10 @@ import 'package:food_app/provider/cart_provider.dart';
 import 'package:food_app/provider/categories_provider.dart';
 import 'package:food_app/provider/device_info.dart';
 import 'package:food_app/provider/favourite_provider.dart';
+import 'package:food_app/provider/filter_provider.dart';
 import 'package:food_app/provider/order_provider.dart';
 import 'package:food_app/provider/product_provider.dart';
+import 'package:food_app/provider/productvarient_provider.dart';
 import 'package:food_app/provider/profile_provider.dart';
 import 'package:food_app/provider/review_provider.dart';
 import 'package:food_app/provider/shareprefes_provider.dart';
@@ -23,6 +25,7 @@ import 'package:food_app/screen/LoginScreen/login_screen.dart';
 import 'package:food_app/screen/bottom_app_screen.dart';
 import 'package:food_app/screen/cart_screen/cart_screen.dart';
 import 'package:food_app/screen/categories_screen.dart';
+
 import 'package:food_app/screen/home&drawer/drawer_home_screen.dart';
 import 'package:food_app/screen/filter_screen.dart';
 
@@ -40,10 +43,12 @@ import 'package:food_app/screen/show_all_products/show_all_prod_screen.dart';
 import 'package:food_app/screen/slider_screen.dart';
 import 'package:food_app/screen/splashscreen.dart';
 import 'package:food_app/screen/successful_password.dart';
-import 'package:food_app/screen/tracking/googletracking.dart';
+
 import 'package:food_app/services/location.dart';
 import 'package:food_app/widget/categories/categories_wid.dart';
 import 'package:provider/provider.dart';
+
+import 'screen/google_maps/googletracking.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -91,7 +96,9 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (ctx) => BottomNavigationBarProvider()),
         ChangeNotifierProvider(create: (ctx) => _themeProvider),
         ChangeNotifierProvider(create: (ctx) => AddressData()),
-        ChangeNotifierProvider.value(value: UserDetails()),
+        ChangeNotifierProvider(create: (ctx) => UserDetails()),
+        ChangeNotifierProvider(create: (ctx) => FilterProvider()),
+        ChangeNotifierProvider(create: (ctx) => ProductVarientProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -110,7 +117,12 @@ class _MyAppState extends State<MyApp> {
           'home-drawer-screen': (context) => const DrawerHomeScreen(),
           'categories-pro': (context) => const CategoriesWid(),
           'categories-screen': (context) => const CategoriesProductScreen(),
-          'product-detail-screen': (context) => const ProductDetailsScreen(),
+          'product-detail-screen': (context) {
+            var data = ModalRoute.of(context).settings.arguments
+                as Map<String, dynamic>;
+            return ProductDetailsScreen(
+                varient: data['productVarientId'].toString());
+          },
           'filter-screen': (context) => const FilterSCreen(),
           'mycart_screen': (context) => const MyCartScreen(),
           'favourite-screen': (context) => const FavouriteScreen(),

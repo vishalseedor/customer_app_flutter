@@ -15,6 +15,8 @@ class Product with ChangeNotifier {
   final int timer;
   final Uint8List imageUrl;
   final int price;
+  final int varient;
+
   final List<Review> review;
   bool isFavourite = false;
   bool isCart = false;
@@ -31,9 +33,12 @@ class Product with ChangeNotifier {
       @required this.timer,
       @required this.imageUrl,
       @required this.price,
+      @required this.varient,
       @required this.review,
       this.isCart = false,
-      this.isFavourite = false});
+      this.isFavourite = false,
+      String startprice,
+      String endprice});
 
   // factory Product.fromMap(Map<String,dynamic> json){
   //   return Product(productId: json['id'], colories: json['active'], subtitle:

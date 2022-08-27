@@ -15,4 +15,5 @@ class CustomImages {
   static const cancelGrey = '$path/cancel-grey.png';
   static const cashonDelivery = '$path/cash-on-delivery.png';
   static const onlinePayment = '$path/debit-card.png';
+  static const seedorlogogif = '$path/seedorgif.gif';
 }

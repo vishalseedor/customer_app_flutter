@@ -70,7 +70,10 @@ class _CategoryProductDesignState extends State<CategoryProductDesign> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(ProductDetailsScreen.routeName,
-            arguments: categorydata.productId);
+            arguments: {
+              'productId': categorydata.productId,
+              'productVarientId': categorydata.varient
+            });
       },
       child: Container(
         decoration: BoxDecoration(

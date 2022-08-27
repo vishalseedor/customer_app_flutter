@@ -23,6 +23,21 @@ class BottomAppScreen extends StatefulWidget {
 }
 
 class _BottomAppScreenState extends State<BottomAppScreen> {
+  Future<bool> ShowWarming(BuildContext context) async => showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+            title: Text('Do you want to exit app?'),
+            actions: [
+              ElevatedButton(
+                child: Text('No'),
+                onPressed: () => Navigator.pop(context, false),
+              ),
+              ElevatedButton(
+                child: Text('Yes'),
+                onPressed: () => Navigator.pop(context, true),
+              ),
+            ],
+          ));
   PageController _pageController;
 
   final List<Widget> _pages = const [
@@ -50,41 +65,50 @@ class _BottomAppScreenState extends State<BottomAppScreen> {
     final productData = Provider.of<ProductProvider>(context);
     final favProd = Provider.of<FavouriteProvider>(context);
     final cartProd = Provider.of<CartProvider>(context);
-    return Scaffold(
-        body: _pages[bottomappbar.currentIndex],
-        bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          currentIndex: bottomappbar.currentIndex,
-          onTap: (val) {
-            if (productData.loadingSpinner ||
-                favProd.isLoading ||
-                cartProd.isLoading) {
-            } else {
-              bottomappbar.currentIndex = val;
-            }
-          },
-          selectedIconTheme:
-              const IconThemeData(color: CustomColor.orangecolor),
-          unselectedIconTheme: const IconThemeData(color: CustomColor.grey300),
-          showSelectedLabels: true,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(Icons.home_outlined),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_outline),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_bag_outlined),
-              label: '',
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline),
-              label: '',
-            ),
-          ],
-        ));
+    return WillPopScope(
+      onWillPop: () async {
+        print('Back Button Pressed');
+
+        final shouldPop = await ShowWarming(context);
+        return shouldPop;
+      },
+      child: Scaffold(
+          body: _pages[bottomappbar.currentIndex],
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: bottomappbar.currentIndex,
+            onTap: (val) {
+              if (productData.loadingSpinner ||
+                  favProd.isLoading ||
+                  cartProd.isLoading) {
+              } else {
+                bottomappbar.currentIndex = val;
+              }
+            },
+            selectedIconTheme:
+                const IconThemeData(color: CustomColor.orangecolor),
+            unselectedIconTheme:
+                const IconThemeData(color: CustomColor.grey300),
+            showSelectedLabels: true,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home_outlined),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.favorite_outline),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.shopping_bag_outlined),
+                label: '',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.person_outline),
+                label: '',
+              ),
+            ],
+          )),
+    );
   }
 }

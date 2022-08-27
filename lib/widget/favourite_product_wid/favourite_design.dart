@@ -12,8 +12,11 @@ import '../../provider/product_provider.dart';
 
 class FavouriteDesign extends StatefulWidget {
   final String productId;
+
   // ignore: use_key_in_widget_constructors
-  const FavouriteDesign({@required this.productId});
+  const FavouriteDesign({
+    @required this.productId,
+  });
 
   @override
   State<FavouriteDesign> createState() => _FavouriteDesignState();
@@ -21,6 +24,19 @@ class FavouriteDesign extends StatefulWidget {
 
 class _FavouriteDesignState extends State<FavouriteDesign> {
   bool loading = false;
+  String productVarient;
+
+  Future<void> getProductvarient() {
+    final product = Provider.of<ProductProvider>(context, listen: false);
+    for (var i = 0; i < product.product.length; i++) {
+      if (widget.productId == product.product[i].productId) {
+        setState(() {
+          productVarient = product.product[i].varient.toString();
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     void favIconButtton() {
@@ -108,8 +124,13 @@ class _FavouriteDesignState extends State<FavouriteDesign> {
       ),
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(ProductDetailsScreen.routeName,
-              arguments: widget.productId);
+          getProductvarient().then((value) {
+            Navigator.of(context).pushNamed(ProductDetailsScreen.routeName,
+                arguments: {
+                  'productId': widget.productId,
+                  'productVarientId': productVarient
+                });
+          });
         },
         child: Container(
           margin: const EdgeInsets.all(10),

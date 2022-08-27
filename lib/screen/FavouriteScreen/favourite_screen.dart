@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:food_app/const/color_const.dart';
+import 'package:food_app/const/config.dart';
 import 'package:food_app/const/theme.dart';
 import 'package:food_app/provider/favourite_provider.dart';
 import 'package:food_app/provider/product_provider.dart';
@@ -57,6 +58,9 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
         ),
       );
     }
+
+    print('Clear');
+    print('Cancel');
 
     final favproduct = data.fav;
     return Scaffold(

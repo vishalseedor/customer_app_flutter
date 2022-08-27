@@ -68,8 +68,11 @@ class _RelatatedProdWidState extends State<RelatatedProdWid> {
     // var image = base64Decode(base64);
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed(ProductDetailsScreen.routeName,
-            arguments: productCategory.productId);
+        Navigator.of(context)
+            .pushNamed(ProductDetailsScreen.routeName, arguments: {
+          'productId': productCategory.productId,
+          'productVarientId': productCategory.varient
+        });
       },
       child: SizedBox(
         width: size.width * 0.48,
@@ -81,7 +84,7 @@ class _RelatatedProdWidState extends State<RelatatedProdWid> {
           child: Column(
             children: [
               SizedBox(
-                height: size.height * 0.15,
+                height: size.height * 0.13,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
                   child: Image.memory(
@@ -95,7 +98,11 @@ class _RelatatedProdWidState extends State<RelatatedProdWid> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    Text(productCategory.title),
+                    Text(
+                      productCategory.title,
+                      overflow: TextOverflow.fade,
+                      maxLines: 1,
+                    ),
                     Text(
                       'Price : ₹' + productCategory.price.toString(),
                       style: Theme.of(context).textTheme.subtitle2,

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
@@ -71,6 +72,7 @@ class FavouriteProvider with ChangeNotifier {
       }
     } catch (e) {
       print(e.toString());
+      print(e.toString() + 'error in add fav post api');
     }
   }
 
@@ -92,12 +94,18 @@ class FavouriteProvider with ChangeNotifier {
               'http://eiuat.seedors.com:8290/customer-mobile-app/get-product/$client_id'),
           headers: headers,
           body: body);
+
       var jsonData = await json.decode(response.body).asMap();
       print('value started ');
+      print(body);
+      print(
+          'http://eiuat.seedors.com:8290/customer-mobile-app/get-product/$client_id');
+      print(response.body);
+
       print('bot value' + jsonData.toString());
       if (response.statusCode == 200) {
         for (var i = 0; i < jsonData.length; i++) {
-          final base64 = jsonData[i]['image_1024'] == ''
+          final base64 = jsonData[i]['image_1024'].toString() == 'false'
               ? customBase64
               : jsonData[i]['image_1024'];
           var image = base64Decode(base64);
@@ -106,7 +114,7 @@ class FavouriteProvider with ChangeNotifier {
             productTitle: jsonData[i]['display_name'].toString(),
             productPrice: jsonData[i]['cart_qty'],
             imageUrl: image,
-            productCategory: jsonData[i]['categ_id'][1],
+            productCategory: jsonData[i]['categ_id'][1].toString(),
           ));
           // loadData.
           // ignore: missing_return
@@ -146,6 +154,7 @@ class FavouriteProvider with ChangeNotifier {
       }
     } catch (e) {
       print('error');
+      print('error in favourite -->>' + e.toString());
       _isLoading = false;
       notifyListeners();
     }
@@ -154,7 +163,7 @@ class FavouriteProvider with ChangeNotifier {
   Future getFavouriteProductId({BuildContext context, String id}) async {
     try {
       List<int> id = [];
-      print('runing runing runiing');
+      print('runing runing runing');
       final data = Provider.of<UserDetails>(context, listen: false);
 
       data.getAllDetails();
@@ -163,6 +172,9 @@ class FavouriteProvider with ChangeNotifier {
         Uri.parse(
             'http://eiuat.seedors.com:8290/customer-app/mycart/${data.id}?clientid=$client_id&status=favourite'),
       );
+      print(
+          'http://eiuat.seedors.com:8290/customer-app/mycart/${data.id}?clientid=$client_id&status=favourite');
+      print(response.toString() + 'gjgjgjhgjg');
 
       if (response.statusCode == 200) {
         // print('No product');
@@ -191,6 +203,7 @@ class FavouriteProvider with ChangeNotifier {
       } else {}
     } catch (e) {
       print(e.toString());
+      print(e.toString() + 'error in get favourite pro');
       print('Something went wrong jjdhjdgj');
     }
   }
@@ -258,6 +271,8 @@ class FavouriteProvider with ChangeNotifier {
         headers: headers,
         body: body,
       );
+      print('remove api loading--->');
+      print(response.body.toString() + 'sgysgygygygg');
       if (response.statusCode == 202) {
         _fav.removeWhere((element) => element.id == prodId);
 
@@ -267,6 +282,7 @@ class FavouriteProvider with ChangeNotifier {
       } else {}
     } catch (e) {
       print(e.toString());
+      print(prodId);
     }
   }
 
@@ -280,14 +296,14 @@ class FavouriteProvider with ChangeNotifier {
       var body = json.encode({
         "userid": data.id.toString(),
         "clientid": client_id,
-        "status": "fav"
+        "status": "favourite"
       });
       print(body);
       var response = await http.delete(
           Uri.parse('http://eiuat.seedors.com:8290/customer-app/clear-cart'),
           body: body,
           headers: header);
-      print(response.body);
+      print(response.body + 'clear-cart');
       if (response.statusCode == 202) {
         globalSnackBar.generalSnackbar(
             context: context, text: ' Your Cart is clear');
@@ -302,6 +318,7 @@ class FavouriteProvider with ChangeNotifier {
       print(e.toString());
       // globalSnackBar.generalSnackbar(
       //     context: context, text: 'Something went wrong');
+
     }
   }
 

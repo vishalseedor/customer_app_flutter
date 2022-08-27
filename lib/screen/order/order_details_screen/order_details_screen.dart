@@ -7,9 +7,9 @@ import 'package:food_app/models/review.dart';
 import 'package:food_app/provider/address/address_data.dart';
 
 import 'package:food_app/provider/order_provider.dart';
+import 'package:food_app/screen/google_maps/googletracking.dart';
 
 import 'package:food_app/screen/review/review_screen.dart';
-import 'package:food_app/screen/tracking/googletracking.dart';
 
 import 'package:provider/provider.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -86,13 +86,13 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
                   children: List.generate(
                       orderData.cart.length,
                       (index) => ListTile(
-                            leading: Image.network(
-                              // orderData.cart[index].imageUrl ??
-                              'https://designhooks.com/wp-content/uploads/2018/07/Cosmetics_Preview1-1.jpg',
-                              width: size.width * 0.21,
-                              height: size.height * 0.12,
-                              fit: BoxFit.cover,
-                            ),
+                            // leading: Image.network(
+                            //   // orderData.cart[index].imageUrl ??
+                            //   'https://img.huffingtonpost.com/asset/5c1224861f00001b0826a6cb.jpeg?ops=scalefit_720_noupscale&format=webp',
+                            //   width: size.width * 0.21,
+                            //   height: size.height * 0.12,
+                            //   fit: BoxFit.cover,
+                            // ),
                             title: Text(
                               orderData.cart[index].title ?? 'null',
                               style: Theme.of(context).textTheme.subtitle2,

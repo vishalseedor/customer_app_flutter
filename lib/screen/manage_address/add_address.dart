@@ -57,7 +57,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
       name: '',
       phoneNumber: '',
       pincode: '',
-      houseNumber: '',
+      houseNumber: '27/25',
       area: '',
       landmark: '',
       town: '',
@@ -67,7 +67,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     'name': '',
     'phonenumber': '',
     'pincode': '',
-    'housenumber': '',
+    'housenumber': '27/25',
     'area': '',
     'landmark': '',
     'town': '',
@@ -101,7 +101,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
           'name': '',
           'phonenumber': '',
           'pincode': '',
-          'housenumber': '',
+          'housenumber': '27/25',
           'area': '',
           'landmark': '',
           'town': '',
@@ -111,7 +111,7 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
         _nameController.text = editAddress.name;
         _phonenumber.text = editAddress.phoneNumber;
         _pincodeController.text = editAddress.pincode;
-        _housenumberController.text = editAddress.houseNumber;
+        _housenumberController.text = editAddress.houseNumber ?? '27/25';
         _areaController.text = editAddress.area;
         _landmarkController.text = editAddress.landmark;
         _townController.text = editAddress.town;
@@ -169,12 +169,13 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     placemark =
         (await placemarkFromCoordinates(position.latitude, position.longitude));
     Placemark pMark = placemark[0];
+    print(pMark);
 
     _pincodeController.text = pMark.postalCode;
     _areaController.text = pMark.thoroughfare;
     _townController.text = pMark.locality;
     _stateController.text = pMark.administrativeArea;
-    _housenumberController.text = pMark.name;
+    _housenumberController.text = pMark.street;
 
     setState(() {});
   }

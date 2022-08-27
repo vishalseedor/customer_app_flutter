@@ -42,6 +42,7 @@ class AddressProvider with ChangeNotifier {
     try {
       final prefs = await SharedPreferences.getInstance();
       String email = prefs.getString('email');
+
       List<Addresss> loadData = [];
       var headers = {
         'Cookie':
@@ -54,6 +55,7 @@ class AddressProvider with ChangeNotifier {
           headers: headers);
       print(
           'http://eiuat.seedors.com:8290/customer-app/userprofile?clientid=$client_id&username=$email');
+      print(response.body);
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
         var otherAddress = jsonData['other_address'];
@@ -63,17 +65,19 @@ class AddressProvider with ChangeNotifier {
             addresstype: otherAddress[i]['type'] ?? 'other',
             area: otherAddress[i]['street'].toString(),
             houseNumber: otherAddress[i]['street2'].toString(),
-            landmark: otherAddress[i]['landmark'].toString() ?? '',
+            landmark: otherAddress[i]['landmark'].toString(),
             name: otherAddress[i]['name'].toString(),
             phoneNumber: otherAddress[i]['mobile'].toString(),
             pincode: otherAddress[i]['zip'].toString(),
             state: 'Tamilnadu' ?? otherAddress[i]['state'].toString(),
             town: otherAddress[i]['city'].toString(),
           ));
+          print(jsonData);
 
           // print('success');
         }
         _address = loadData;
+        _isLoading = false;
         print('add res data ' + _address.toString());
         notifyListeners();
       } else {
@@ -85,8 +89,10 @@ class AddressProvider with ChangeNotifier {
       _isLoading = false;
       notifyListeners();
     } catch (e) {
+      print(e.toString());
       snackBar.generalSnackbar(context: context, text: 'Something went wrong');
       _isErrorLoading = true;
+      _isLoading = false;
       notifyListeners();
     }
   }
@@ -122,6 +128,7 @@ class AddressProvider with ChangeNotifier {
           headers: headers,
           body: body);
       print(body.toString());
+      print('http://eiuat.seedors.com:8290/customer-app/create-address');
       if (response.statusCode == 200) {
         snackBar.successsnackbar(
             context: context, text: 'Address Added successfull');
@@ -159,12 +166,15 @@ class AddressProvider with ChangeNotifier {
         "zip": address.pincode,
         "clientid": client_id
       });
+      print(body.toString());
 
       var response = await http.put(
           Uri.parse(
               'http://eiuat.seedors.com:8290/customer-app/change-address/${address.id.toString()}'),
           headers: headers,
           body: body);
+      print(
+          'http://eiuat.seedors.com:8290/customer-app/change-address/${address.id.toString()}');
       print(body.toString());
       if (response.statusCode == 200) {
         snackBar.successsnackbar(

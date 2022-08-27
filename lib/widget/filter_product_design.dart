@@ -1,70 +1,65 @@
-import 'dart:convert';
-
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:food_app/const/color_const.dart';
-
-import 'package:food_app/models/product.dart';
-import 'package:food_app/provider/cart_provider.dart';
-import 'package:food_app/provider/favourite_provider.dart';
-
-import 'package:food_app/screen/product_detail_screen.dart';
-import 'package:food_app/services/dialogbox.dart';
-import 'package:food_app/services/snackbar.dart';
 import 'package:provider/provider.dart';
 
-import '../../const/image_base64.dart';
-import '../../provider/product_provider.dart';
+import '../const/color_const.dart';
+import '../models/product.dart';
+import '../provider/cart_provider.dart';
+import '../provider/favourite_provider.dart';
+import '../provider/product_provider.dart';
+import '../screen/product_detail_screen.dart';
+import '../services/dialogbox.dart';
+import '../services/snackbar.dart';
 
-class ShowAllProductDesign extends StatefulWidget {
-  const ShowAllProductDesign({Key key}) : super(key: key);
+class FilterProductDesign extends StatefulWidget {
+  const FilterProductDesign({Key key}) : super(key: key);
 
   @override
-  State<ShowAllProductDesign> createState() => _ShowAllProductDesignState();
+  State<FilterProductDesign> createState() => _FilterProductDesignState();
 }
 
-class _ShowAllProductDesignState extends State<ShowAllProductDesign> {
+class _FilterProductDesignState extends State<FilterProductDesign> {
   bool loading = false;
   @override
-  Widget build(BuildContext context) {
-    void favIconButtton() {
-      var data = Provider.of<FavouriteProvider>(context, listen: false).fav;
-      // print('fav product lemngth ${data.length}');
-      final product =
-          Provider.of<ProductProvider>(context, listen: false).product;
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    favIconButtton();
+  }
 
-      if (data.isNotEmpty) {
-        for (var i = 0; i < product.length; i++) {
-          print(product.length.toString() + 'product length');
-          print('product length is loading --->');
-          for (var j = 0; j < data.length; j++) {
-            print(data.length.toString() + 'data length');
-            print('data length is loading --->');
-            if (product[i].productId == data[j].id) {
-              print(data[j].id +
-                  '  Fav product is true  ' +
-                  product[i].productId);
+  void favIconButtton() {
+    var data = Provider.of<FavouriteProvider>(context, listen: false).fav;
+    // print('fav product lemngth ${data.length}');
+    final product =
+        Provider.of<ProductProvider>(context, listen: false).product;
 
-              product[i].isFavourite = true;
-            } else {
-              print('Fav product is false' + product[i].productId);
-              print('button is loading ---->');
+    if (data.isNotEmpty) {
+      for (var i = 0; i < product.length; i++) {
+        print(product.length.toString() + 'product length');
+        for (var j = 0; j < data.length; j++) {
+          print(data.length.toString() + 'data length');
+          if (product[i].productId == data[j].id) {
+            print(
+                data[j].id + '  Fav product is true  ' + product[i].productId);
+            product[i].isFavourite = true;
+          } else {
+            print('Fav product is false' + product[i].productId);
 
-              // product[i].isFavourite = false;
-            }
+            // product[i].isFavourite = false;
           }
         }
-      } else if (data.isEmpty) {
-        print('data call is not possible in api call');
-        print('data empty in favourite');
-
-        for (var i = 0; i < product.length; i++) {
-          product[i].isFavourite = false;
-        }
+      }
+    } else if (data.isEmpty) {
+      print('data empty in favourite');
+      for (var i = 0; i < product.length; i++) {
+        product[i].isFavourite = false;
       }
     }
+  }
 
+  @override
+  Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     final product = Provider.of<Product>(context);
     final favprod = Provider.of<FavouriteProvider>(context);
@@ -75,6 +70,7 @@ class _ShowAllProductDesignState extends State<ShowAllProductDesign> {
     final fav = favprod.favourite;
 
     GlobalSnackBar _snackbar = GlobalSnackBar();
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushNamed(ProductDetailsScreen.routeName,

@@ -121,10 +121,11 @@ class _PopularProductDesignState extends State<PopularProductDesign> {
           onTap: () {
             print('hghgcg');
             print(product.productId);
-            Navigator.of(context).pushNamed(
-              ProductDetailsScreen.routeName,
-              arguments: product.productId,
-            );
+            Navigator.of(context).pushNamed(ProductDetailsScreen.routeName,
+                arguments: {
+                  'productId': product.productId,
+                  'productVarientId': product.varient
+                });
           },
           child: Container(
             margin: EdgeInsets.only(

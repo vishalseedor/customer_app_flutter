@@ -13,7 +13,10 @@ class Categories {
       {@required this.id,
       @required this.title,
       @required this.isSelected,
-      @required this.image});
+      @required this.image,
+      String value,
+      String startprice,
+      String endprice});
 
   // factory Categories.fromMap(Map<String, dynamic> json) {
   //   return Categories(

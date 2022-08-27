@@ -6,11 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:food_app/const/color_const.dart';
 import 'package:food_app/const/images.dart';
 import 'package:food_app/const/theme.dart';
+import 'package:food_app/models/filter.dart';
 import 'package:food_app/provider/bottom_navigationbar_provider.dart';
 
 import 'package:food_app/provider/cart_provider.dart';
 import 'package:food_app/provider/favourite_provider.dart';
 import 'package:food_app/provider/product_provider.dart';
+import 'package:food_app/provider/productvarient_provider.dart';
+
 import 'package:food_app/screen/bottom_app_screen.dart';
 
 import 'package:food_app/services/dialogbox.dart';
@@ -23,7 +26,9 @@ import 'package:provider/provider.dart';
 import '../const/image_base64.dart';
 
 class ProductDetailsScreen extends StatefulWidget {
-  const ProductDetailsScreen({Key key}) : super(key: key);
+  final String varient;
+  const ProductDetailsScreen({Key key, @required this.varient})
+      : super(key: key);
   static const routeName = 'product-detail-screen';
 
   @override
@@ -31,17 +36,28 @@ class ProductDetailsScreen extends StatefulWidget {
 }
 
 class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    Provider.of<ProductVarientProvider>(context, listen: false)
+        .getProductData(context, widget.varient);
+  }
+
   void favIconButtton() {
     var data = Provider.of<FavouriteProvider>(context, listen: false).fav;
     // print('fav product lemngth ${data.length}');
     final product =
         Provider.of<ProductProvider>(context, listen: false).product;
+    print(product);
 
     if (data.isNotEmpty) {
       for (var i = 0; i < product.length; i++) {
         print(product.length.toString() + 'product length');
+        print('product length is loading--->');
         for (var j = 0; j < data.length; j++) {
           print(data.length.toString() + 'data length');
+          print('data length is loading--->');
           if (product[i].productId == data[j].id) {
             print(
                 data[j].id + '  Fav product is true  ' + product[i].productId);
@@ -102,11 +118,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
   Widget build(BuildContext context) {
     GlobalSnackBar _snackbar = GlobalSnackBar();
     //This productId get from the home screen.
-    final productId = ModalRoute.of(context).settings.arguments;
+    final productId =
+        ModalRoute.of(context).settings.arguments as Map<String, dynamic>;
     //This step is used to find the product with their ID.
     final productDetails =
-        Provider.of<ProductProvider>(context).findById(productId);
+        Provider.of<ProductProvider>(context).findById(productId['productId']);
     //Here i have store the category in on variable
+    // final varientid = Provider.of<ProductVarientProvider>(context);
+
     final category = productDetails.categories;
 // Here i have compare the category and store in list
     final productCategory =
@@ -118,6 +137,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     // final cartquantity = Provider.of<CartModel>(context);
     //List of Product
     final cartProduct = cart.cartproduct;
+    final productVarient = Provider.of<ProductVarientProvider>(context);
     Size size = MediaQuery.of(context).size;
     final navigation = Provider.of<BottomNavigationBarProvider>(context);
 
@@ -242,12 +262,14 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       child: Container(
                         margin: const EdgeInsets.all(25),
                         decoration: BoxDecoration(
-                            color: CustomColor.dryOrange,
-                            // shape: BoxShape.circle,
-                            borderRadius: BorderRadius.circular(20),
-                            image: DecorationImage(
-                                image: MemoryImage(productDetails.imageUrl),
-                                fit: BoxFit.fill)),
+                          color: CustomColor.dryOrange,
+                          // shape: BoxShape.circle,
+                          borderRadius: BorderRadius.circular(20),
+                          image: DecorationImage(
+                            image: MemoryImage(productDetails.imageUrl),
+                            fit: BoxFit.fill,
+                          ),
+                        ),
                       ),
                     ),
                     // PageView.builder(
@@ -302,7 +324,9 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                   children: [
                     Container(
                         alignment: Alignment.centerLeft,
-                        child: Text(productDetails.title)),
+                        child: Text(
+                          productDetails.title,
+                        )),
                     SizedBox(
                       height: size.height * 0.02,
                     ),
@@ -518,20 +542,26 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               alignment: Alignment.centerLeft,
               child: const Text('Related Product'),
             ),
-            Container(
-              height: size.height * 0.3,
-              margin: const EdgeInsets.only(left: 10),
-              child: Consumer<ProductProvider>(builder: (context, data, _) {
-                return ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: data.product.length,
-                    itemBuilder: (ctx, index) {
-                      return ChangeNotifierProvider.value(
-                          value: data.product[index],
-                          child: const RelatatedProdWid());
-                    });
-              }),
-            )
+            productVarient.loadingSpinner
+                ? Container(
+                    height: size.height * 0.3,
+                    child: Center(child: CircularProgressIndicator()),
+                  )
+                : Container(
+                    height: size.height * 0.3,
+                    margin: const EdgeInsets.only(left: 10),
+                    child: Consumer<ProductVarientProvider>(
+                        builder: (context, data, _) {
+                      return ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: data.product.length,
+                          itemBuilder: (ctx, index) {
+                            return ChangeNotifierProvider.value(
+                                value: data.product[index],
+                                child: const RelatatedProdWid());
+                          });
+                    }),
+                  )
           ],
         ),
       ),
@@ -552,7 +582,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
 
                     await Provider.of<FavouriteProvider>(context, listen: false)
                         .addFavouriteProductPostApi(
-                            context: context, productId: productId)
+                            context: context, productId: productId['productId'])
                         .then((value) {
                       Provider.of<FavouriteProvider>(context, listen: false)
                           .getFavouriteProductId(
@@ -578,7 +608,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     });
                     await Provider.of<FavouriteProvider>(context, listen: false)
                         .deleteFavourite(
-                      prodId: productId,
+                      prodId: productId['productId'],
                       context: context,
                     )
                         .then((value) async {

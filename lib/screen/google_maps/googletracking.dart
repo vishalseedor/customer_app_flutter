@@ -2,17 +2,18 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
-import 'package:food_app/api/tracking_api.dart';
-import 'package:food_app/const/color_const.dart';
-import 'package:food_app/map/config_map.dart';
-
-import 'package:food_app/provider/address/address_data.dart';
-
-import 'package:food_app/services/progress_dialog.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+
+import '../../api/tracking_api.dart';
+import '../../const/color_const.dart';
+import '../../map/config_map.dart';
+import '../../provider/address/address_data.dart';
+import '../../services/progress_dialog.dart';
 
 class GoogleMapTracking extends StatefulWidget {
   static const routeName = 'googlemap-traking';
@@ -25,6 +26,10 @@ class GoogleMapTracking extends StatefulWidget {
 class _GoogleMapTrackingState extends State<GoogleMapTracking> {
   List<LatLng> polyLineCoordinates = [];
   Set<Polyline> polylineSet = {};
+  StreamSubscription<Position> streamSubscription;
+  double latitude = 0.0;
+  double longitude = 0.0;
+  var address = 'Getting Address..'.obs;
   double bottompaddingOfMap = 0;
 
   String distance = '0.00km';
@@ -38,12 +43,10 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
+    getLocation();
     final address =
         Provider.of<AddressData>(context, listen: false).pickUpLocation;
-    String delivery = address.area ??
-        'null' ',' + address.town ??
-        'Nagercoil' ',' + address.state ??
-        'null';
+    String delivery = address.area + ',' + address.town + ',' + address.state;
     getLatLng(delivery);
   }
 
@@ -74,6 +77,37 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
     // print('This is your address' + address.toString());
   }
 
+  getLocation() async {
+    bool serviceEnabled;
+
+    LocationPermission permission;
+
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      await Geolocator.openLocationSettings();
+      return Future.error('Location services are disabled');
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are  denied');
+      }
+    }
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied,we cannot request permissions.');
+    }
+    streamSubscription =
+        Geolocator.getPositionStream().listen((Position position) {
+      //  latitude.value='Latitude:${position.latitude}';
+      // longitude.value='Longitude:${position.longitude}';
+      latitude = position.latitude;
+      longitude = position.longitude;
+      print(latitude.toString() + '--->>> moving latitude');
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     // _makingPhoneCall()async{
@@ -93,7 +127,7 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
       // var finalPosition = Provider.of<AppData>(context,listen: false).dropOffLocation;
 
       var pickUpLatLand = LatLng(lat, lang);
-      var dropOffLatLng = const LatLng(8.088587, 77.545233);
+      var dropOffLatLng = LatLng(latitude, longitude);
 
       showDialog(
           context: context,
@@ -218,7 +252,7 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
         children: [
           GoogleMap(
             padding: EdgeInsets.only(bottom: bottompaddingOfMap),
-            mapType: MapType.normal,
+            mapType: MapType.hybrid,
             myLocationEnabled: true,
             zoomGesturesEnabled: true,
             zoomControlsEnabled: true,
@@ -253,7 +287,7 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
             child: Container(
               height: size.height * 0.31,
               width: size.width,
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                   color: CustomColor.whitecolor,
                   borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(20),
@@ -278,9 +312,15 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
                               Text(
                                   'Distance :' + distance.toString() ??
                                       '0.00km',
-                                  style: Theme.of(context).textTheme.caption),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                      color: CustomColor.blackcolor)),
                               Text('Time :' + time.toString() ?? '00.00',
-                                  style: Theme.of(context).textTheme.caption),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 12,
+                                      color: CustomColor.blackcolor)),
                               GestureDetector(
                                 onTap: () async {
                                   await getPlaceDirection();
@@ -308,8 +348,10 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
                                     flex: 1,
                                     child: Text(
                                       'Your Address : ',
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 12,
+                                          color: CustomColor.blackcolor),
                                     )),
                                 Expanded(
                                     flex: 2,
@@ -317,26 +359,26 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
                                       children: [
                                         Text(
                                           address.houseNumber +
-                                                  ',' +
-                                                  address.area +
-                                                  ',' +
-                                                  address.town ??
-                                              'null'
-                                                      ',' +
-                                                  address.state ??
-                                              'null',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption,
+                                              ',' +
+                                              address.area +
+                                              ',' +
+                                              address.town +
+                                              ',' +
+                                              address.state,
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 12,
+                                              color: CustomColor.blackcolor),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                         Text(
                                             address.pincode +
                                                 ',' +
                                                 address.name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .caption),
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
+                                                color: CustomColor.blackcolor)),
                                       ],
                                     ))
                               ],
@@ -359,33 +401,32 @@ class _GoogleMapTrackingState extends State<GoogleMapTracking> {
                               children: [
                                 Expanded(
                                     flex: 1,
-                                    child: Text(
-                                      'Driver Address : ',
-                                      style:
-                                          Theme.of(context).textTheme.subtitle1,
-                                    )),
+                                    child: Text('Driver Address : ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700,
+                                            fontSize: 12,
+                                            color: CustomColor.blackcolor))),
                                 Expanded(
                                     flex: 2,
                                     child: Column(
                                       children: [
                                         Text(
-                                          '120b'
-                                          ','
-                                          'Maravai'
-                                          ','
-                                          'Nagercoil'
-                                          ','
-                                          'TamilNadu',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption,
-                                        ),
-                                        Text(
-                                          '629002' ',' 'Sushalt',
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .caption,
-                                        ),
+                                            '120b'
+                                            ','
+                                            'Maravai'
+                                            ','
+                                            'Nagercoil'
+                                            ','
+                                            'TamilNadu',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
+                                                color: CustomColor.blackcolor)),
+                                        Text('629002' ',' 'Sushalt',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700,
+                                                fontSize: 12,
+                                                color: CustomColor.blackcolor)),
                                         InkWell(
                                           onTap: () => launch('tel:9790611702'),
                                           child: Container(

@@ -106,6 +106,7 @@ class CartProvider with ChangeNotifier {
   // }
 
   Future cartProductId({BuildContext context}) async {
+    final product = Provider.of<ProductProvider>(context, listen: false);
     try {
       _isLoading = true;
 
@@ -121,13 +122,14 @@ class CartProvider with ChangeNotifier {
         Uri.parse(
             'http://eiuat.seedors.com:8290/customer-app/mycart/${data.id}?clientid=$client_id&status=cart'),
       );
+      print(
+          'http://eiuat.seedors.com:8290/customer-app/mycart/${data.id}?clientid=$client_id&status=cart');
 
       if (response.statusCode == 200) {
         print('No product');
         var jsonData = json.decode(response.body);
         if (jsonData['entries'].toString() != '{}') {
-          // var jsonData = json.decode(response.body);
-
+          // var
           // print(response.body);
           print('cart product 200');
           for (var i = 0; i < jsonData['entries']['entry'].length; i++) {
@@ -142,6 +144,7 @@ class CartProvider with ChangeNotifier {
             // print('product id + ${id[i]}');
             if (data >= 1) {
               id.add(int.parse(jsonData['entries']['entry'][i]['productid']));
+
               loadData.add(CartModel(
                   id: jsonData['entries']['entry'][i]['productid'].toString(),
                   title: jsonData['entries']['entry'][i]['product_variant_id']
@@ -275,7 +278,8 @@ class CartProvider with ChangeNotifier {
           headers: header);
       if (response.statusCode == 202) {
         globalSnackBar.generalSnackbar(
-            context: context, text: ' Your Cart is clear');
+            context: context,
+            text: ' Your Order Successfully Placed,Thank You !');
         _cartproduct.clear();
 
         notifyListeners();

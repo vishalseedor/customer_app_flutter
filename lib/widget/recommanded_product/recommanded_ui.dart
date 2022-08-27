@@ -79,7 +79,10 @@ class _RecommandedDesignState extends State<RecommandedDesign> {
     return InkWell(
       onTap: () {
         Navigator.of(context).pushNamed(ProductDetailsScreen.routeName,
-            arguments: product.productId);
+            arguments: {
+              'productId': product.productId,
+              'productVarientId': product.varient
+            });
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 20),

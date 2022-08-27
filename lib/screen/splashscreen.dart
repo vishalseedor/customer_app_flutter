@@ -66,8 +66,8 @@ class _SplashScreenState extends State<SplashScreen> {
                       color: CustomColor.blackcolor,
                       shape: BoxShape.rectangle,
                       image: DecorationImage(
-                          image: AssetImage(CustomImages.seedorLogo),
-                          fit: BoxFit.fill)),
+                          image: AssetImage(CustomImages.seedorlogogif),
+                          fit: BoxFit.cover)),
                   // child: Image.asset(
                   //   CustomImages.seedorLogo,
                   //   fit: BoxFit.fill,
@@ -78,11 +78,11 @@ class _SplashScreenState extends State<SplashScreen> {
           ),
           Positioned(
             bottom: size.height * 0.1,
-            child: const Text('FOOD APP',
+            child: const Text('CUSTOMER APP',
                 style: TextStyle(
                     color: CustomColor.blackcolor,
                     fontSize: 20,
-                    fontWeight: FontWeight.bold)),
+                    fontWeight: FontWeight.w900)),
           ),
         ],
       ),

@@ -94,6 +94,7 @@ class OrderProvider with ChangeNotifier {
                 pincode: addrData[3].toString(),
                 state: addrData[6].toString(),
                 town: addrData[5].toString());
+            print(addrData);
             // print('address data val -->>' + addrData.toList().toString());
             _cartData = [];
             for (var j = 0; j < decoded['Order']['LineItems'].length; j++) {
@@ -199,6 +200,7 @@ class OrderProvider with ChangeNotifier {
           headers: headers,
           body: body);
       print(response.body);
+      print('http://eiuat.seedors.com:8290/seedor-api/order/create');
       if (response.statusCode == 200) {
         print('order successfully placed');
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

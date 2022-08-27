@@ -340,14 +340,25 @@ class ProductProvider with ChangeNotifier {
   }
 
   Future<void> getProductData(BuildContext context) async {
+    print('product api start -- 1');
     try {
       _loadingSpinner = true;
       notifyListeners();
       List<Product> _loadedProduct = [];
+      print('product api start -- 2');
       var headers = {
         'Content-Type': 'application/json',
       };
-      var body = json.encode({"clientid": client_id, "type": "products"});
+      print('product api start -- 3');
+      var body = json.encode({
+        "clientid": client_id,
+        "type": "products",
+        "fields":
+            "{'active','id','categ_id','image_1024','list_price','description','display_name','pricelist_id','product_variant_id','product_variant_ids'}"
+      });
+      print('fields is loading--->');
+      print(body);
+
       var response = await http.post(
           Uri.parse('http://eiuat.seedors.com:8290/get-all-details'),
           headers: headers,
@@ -357,11 +368,13 @@ class ProductProvider with ChangeNotifier {
         for (var i = 0; i < extractedData.length; i++) {
           print(extractedData[i]['display_name']);
           double price = extractedData[i]['list_price'];
+          print('bool 1 is loading --->');
 
           final base64 = extractedData[i]['image_1024'].toString() == 'false'
               ? customBase64
               : extractedData[i]['image_1024'].toString();
           var image = base64Decode(base64);
+          print('bool 2 is loading--->');
 
           _loadedProduct.add(Product(
               categories: extractedData[i]['categ_id'][0].toString(),
@@ -373,8 +386,9 @@ class ProductProvider with ChangeNotifier {
               quantity: 1,
               rating: 3,
               review: [],
-              subtitle: 'food',
+              subtitle: extractedData[i]['categ_id'][1],
               timer: 40,
+              varient: extractedData[i]['product_variant_id'][0],
               title: extractedData[i]['display_name'].toString()));
         }
         _product = _loadedProduct;

@@ -13,6 +13,7 @@ import 'package:food_app/screen/manage_address/my_address.dart';
 import 'package:food_app/screen/order/order_screen.dart';
 import 'package:food_app/screen/profile/profile_screen.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerScreen extends StatefulWidget {
@@ -156,7 +157,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
               SizedBox(
                 height: size.height * 0.03,
               ),
-              drawerIcon('Track Your Order', Icons.art_track_sharp, () {}),
+              // drawerIcon('Track Your Order', Icons.art_track_sharp, () {}),
               // SizedBox(
               //   width: size.width * 0.7,
               //   child: ListTile(
@@ -170,9 +171,12 @@ class _DrawerScreenState extends State<DrawerScreen> {
               //         child: CupertinoSwitch(value: true, onChanged: (val) {})),
               //   ),
               // ),
-              drawerIcon('Invite a Friend', Icons.person_add_outlined, () {}),
+              drawerIcon('Invite a Friend', Icons.person_add_outlined, () {
+                Share.share('https://play.google.com/store/apps',
+                    subject: 'FOOD APP');
+              }),
               drawerIcon('Help Center', Icons.help_outline, () {}),
-              drawerIcon('Settings', Icons.settings_outlined, () {}),
+              // drawerIcon('Settings', Icons.settings_outlined, () {}),
               drawerIcon('Logout', Icons.logout_outlined, () async {
                 final prefs = await SharedPreferences.getInstance();
                 prefs.clear().then((value) {

@@ -93,12 +93,13 @@ class AuthProvider with ChangeNotifier {
         "os_type": device.deviceName,
         "clientid": client_id
       });
-      // print(body.toString());
+      print(body.toString());
       var response = await http.post(
           Uri.parse('http://eiuat.seedors.com:8290/customer-app/login'),
           headers: header,
           body: body);
-      // print(response.body.toString());
+      print('http://eiuat.seedors.com:8290/customer-app/login'); 
+      print(response.body.toString() + 'wefjoisdfidhivhdli');
       var jsonData = json.decode(response.body);
       if (response.statusCode == 200) {
         prefs.setString('partner_id', jsonData['partner_id'].toString());
@@ -129,6 +130,7 @@ class AuthProvider with ChangeNotifier {
             'city', jsonData['primary_profile'][0]['city'].toString());
         prefs.setString(
             'image', jsonData['primary_profile'][0]['image_1024'].toString());
+        print(body.toString());
 
         Navigator.of(context).pushNamed(BottomAppScreen.routeName);
         await globalSnackBar.successsnackbar(
