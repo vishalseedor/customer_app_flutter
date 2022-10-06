@@ -42,11 +42,18 @@ class FilterProvider with ChangeNotifier {
     return _loadingSpinner;
   }
 
+  bool _isSelect = false;
+
+  bool get isSelect {
+    return _isSelect;
+  }
+
   Future<void> getProductData(
       {@required BuildContext context,
       @required String startprice,
       @required String endprice,
-      @required List<String> listOfId}) async {
+      @required List<String> listOfId,
+      @required bool isSelect}) async {
     try {
       print(
           "[('list_price','>',$startprice),('list_price','<',$endprice),('id','= ${listOfId.toList().toString()})]");
@@ -72,6 +79,7 @@ class FilterProvider with ChangeNotifier {
           Uri.parse('http://eiuat.seedors.com:8290/get-all-details'),
           headers: headers,
           body: body);
+      print('http://eiuat.seedors.com:8290/get-all-details');
 
       var jsonData = json.decode(response.body);
       print(jsonData);
@@ -85,6 +93,7 @@ class FilterProvider with ChangeNotifier {
               : jsonData[i]['image_1024'].toString();
           var image = base64Decode(base64);
           _loadedProduct.add(Product(
+            isSelect: false,
             categories: jsonData[i]['categ_id'][0].toString(),
             colories: '40',
             description: jsonData[i]['description'].toString(),
@@ -101,12 +110,18 @@ class FilterProvider with ChangeNotifier {
             title: jsonData[i]['display_name'].toString(),
           ));
           _filterProduct = _loadedProduct;
+          _loadingSpinner = false;
           notifyListeners();
         }
-      } else {}
+      } else {
+        _loadingSpinner = false;
+        notifyListeners();
+      }
     } on HttpException catch (e) {
       print('error in product prod -->>' + e.toString());
+      print(loadingSpinner);
       _loadingSpinner = false;
+      _isSelect = false;
       notifyListeners();
       snackBar.generalSnackbar(context: context, text: 'Something went wrong');
     }

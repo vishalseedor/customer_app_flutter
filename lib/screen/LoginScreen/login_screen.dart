@@ -69,6 +69,7 @@ class _LoginScreenState extends State<LoginScreen> {
         // deviveId: device.deviceId,
         context: context,
       );
+      print('loginapiCall');
     }
 
     //

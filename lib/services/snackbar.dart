@@ -25,18 +25,18 @@ class GlobalSnackBar {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('${cartcount.length}  ITEM'),
+                  Text('${cartcount.length + 1}  ITEM'),
                   Row(
                     children: [
-                      Text('₹' + cart.totalAmount.toString()),
+                      Text('Product Add successfull'),
                       const SizedBox(
                         width: 10,
                       ),
-                      const Text(
-                        'plus taxes',
-                        style: TextStyle(
-                            fontSize: 12, color: CustomColor.whitecolor),
-                      )
+                      // const Text(
+                      //   'plus taxes',
+                      //   style: TextStyle(
+                      //       fontSize: 12, color: CustomColor.whitecolor),
+                      // )
                     ],
                   )
                 ],

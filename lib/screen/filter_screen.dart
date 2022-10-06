@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:food_app/const/color_const.dart';
 import 'package:food_app/const/images.dart';
@@ -18,9 +17,10 @@ class FilterSCreen extends StatefulWidget {
 }
 
 class _FilterSCreenState extends State<FilterSCreen> {
+  bool _loading = false;
   int startprice = 0;
   int endprice = 0;
-  List<String> cate_id =  [];
+  List<String> cate_id = [];
   RangeValues values = const RangeValues(1, 1000);
   RangeLabels labels = const RangeLabels('1', "1000");
 
@@ -50,6 +50,7 @@ class _FilterSCreenState extends State<FilterSCreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     final filter = Provider.of<FilterProvider>(context);
 
     final productCategory = Provider.of<CategoriesProvider>(context).categories;
@@ -114,7 +115,7 @@ class _FilterSCreenState extends State<FilterSCreen> {
                           values: values,
                           labels: labels,
                           onChanged: (value) {
-                            setState(() { 
+                            setState(() {
                               values = value;
                               startprice = value.start.toInt();
                               endprice = value.end.toInt();
@@ -127,7 +128,6 @@ class _FilterSCreenState extends State<FilterSCreen> {
                     Text(
                       '${values.end.toInt().toString()}₹',
                       style: Theme.of(context).textTheme.headline3,
-                      
                     )
                   ],
                 ),
@@ -141,26 +141,22 @@ class _FilterSCreenState extends State<FilterSCreen> {
                       productCategory.length,
                       (index) => InkWell(
                             onTap: () {
-
-                            
-
                               // if(productCategory[index].isSelected == true){
                               //   cate_id.removeAt();
                               //   productCategory[index].isSelected = false;
                               //   setState(() {
-                                  
+
                               //   });
                               // }else{
                               //   cate_id.add(productCategory[index].id);
                               //     productCategory[index].isSelected = true;
                               //     setState(() {
-                                    
+
                               //     });
-                             
-                            
+
                               // // cate_id.add(productCategory[index].id);
                               // print(cate_id.toList().toString()+ '----->>> product length');
-                             
+
                               setState(() {
                                 productCategory[index].isSelected =
                                     !productCategory[index].isSelected;
@@ -248,31 +244,36 @@ class _FilterSCreenState extends State<FilterSCreen> {
                   height: size.height * 0.065,
                   margin: const EdgeInsets.all(10),
                   child: ElevatedButton(
-                    onPressed: () {
-                       if(filter.loadingSpinner){
-
-                       }else{
+                    onPressed: () async {
+                      if (filter.loadingSpinner == true) {
+                        print('button dont work');
+                      } else {
+                        print('button dont work in one');
                         cate_id = [];
-                      for(var i = 0;i< productCategory.length;i++){
-                        if(productCategory[i].isSelected == true){
-                         cate_id.add(productCategory[i].id);
-                        }else{
-
+                        for (var i = 0; i < productCategory.length; i++) {
+                          if (productCategory[i].isSelected == true) {
+                            cate_id.add(productCategory[i].id);
+                          } else {}
                         }
+                        Provider.of<FilterProvider>(context, listen: false)
+                            .getProductData(
+                                isSelect: _loading,
+                                context: context,
+                                startprice: startprice.toString(),
+                                endprice: endprice.toString(),
+                                listOfId: cate_id)
+                            .then((value) {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (ctx) => FilterProductScreen()));
+                        });
+                        print(cate_id.toList().toString());
                       }
-                      Provider.of<FilterProvider>(context,listen: false).getProductData(context: context, startprice: startprice.toString(), endprice: endprice.toString(), listOfId:cate_id).then((value) {
-                        Navigator.of(context).push(MaterialPageRoute(builder: (ctx) => FilterProductScreen()));
-                      });
-                      print(cate_id.toList().toString());
-                       }
-                     
-                    //  Provider.of<FilterProvider>(context,listen: false).getProductData(context: context, startprice: startprice.toString(), endprice: endprice.toString(), listOfId: );
-                    
-                      
-                      
-                      
-           },
-                    child: Text( filter.loadingSpinner ? 'Loading':'Apply'),
+
+                      //  Provider.of<FilterProvider>(context,listen: false).getProductData(context: context, startprice: startprice.toString(), endprice: endprice.toString(), listOfId: );
+                    },
+                    child: Text(
+                      filter.loadingSpinner ? 'Loading' : 'Apply',
+                    ),
                   ),
                 )
               ],

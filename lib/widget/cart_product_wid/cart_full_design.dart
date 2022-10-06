@@ -424,8 +424,8 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                         'Delivery Charge',
                         style: Theme.of(context).textTheme.subtitle2,
                       ),
-                      const Spacer(),
-                      Text('₹ ' + data.shippingcharge.toString())
+                      // const Spacer(),
+                      // Text('₹ ' + data.shippingcharge.toString())
                     ],
                   ),
                 ),
@@ -462,14 +462,14 @@ class _CartScreenDesignState extends State<CartScreenDesign> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      'Delivery charges',
-                      style: Theme.of(context).textTheme.subtitle2,
-                    ),
-                    Text(
-                      '₹' + data.shippingcharge.toString(),
-                      style: Theme.of(context).textTheme.subtitle2,
-                    )
+                    // Text(
+                    //   'Delivery charges',
+                    //   style: Theme.of(context).textTheme.subtitle2,
+                    // ),
+                    // Text(
+                    //   '₹' + data.shippingcharge.toString(),
+                    //   style: Theme.of(context).textTheme.subtitle2,
+                    // )
                   ],
                 ),
                 Row(

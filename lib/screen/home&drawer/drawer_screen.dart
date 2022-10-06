@@ -7,11 +7,13 @@ import 'package:food_app/const/theme.dart';
 import 'package:food_app/provider/bottom_navigationbar_provider.dart';
 import 'package:food_app/provider/shareprefes_provider.dart';
 import 'package:food_app/screen/LoginScreen/login_screen.dart';
+import 'package:food_app/screen/help_center_screen.dart';
 
 import 'package:food_app/screen/manage_address/add_address.dart';
 import 'package:food_app/screen/manage_address/my_address.dart';
 import 'package:food_app/screen/order/order_screen.dart';
 import 'package:food_app/screen/profile/profile_screen.dart';
+import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -175,19 +177,48 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 Share.share('https://play.google.com/store/apps',
                     subject: 'FOOD APP');
               }),
-              drawerIcon('Help Center', Icons.help_outline, () {}),
+              // drawerIcon('Help Center', Icons.help_outline, () {
+              //   Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) => const HelpCentreScreen()));
+              // }),
               // drawerIcon('Settings', Icons.settings_outlined, () {}),
               drawerIcon('Logout', Icons.logout_outlined, () async {
+                showDialog(
+                    context: context,
+                    builder: (ctx) => AlertDialog(
+                          title: Text(
+                            'Logout',
+                            style: TextStyle(
+                                fontWeight: FontWeight.w900,
+                                color: CustomColor.blackcolor),
+                          ),
+                          content:
+                              const Text('Are you sure,Do you want logout?'),
+                          actions: <Widget>[
+                            ElevatedButton(
+                                child: const Text('No'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                }),
+                            ElevatedButton(
+                              child: const Text('Yes'),
+                              onPressed: () {
+                                Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        LoginScreen(),
+                                  ),
+                                  (route) => false,
+                                );
+                              },
+                            )
+                          ],
+                        ));
                 final prefs = await SharedPreferences.getInstance();
-                prefs.clear().then((value) {
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: (BuildContext context) => LoginScreen(),
-                    ),
-                    (route) => false,
-                  );
-                });
+                prefs.clear().then((value) {});
               }),
             ],
           ),

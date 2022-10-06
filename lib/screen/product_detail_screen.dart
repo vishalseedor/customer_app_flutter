@@ -333,8 +333,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     Container(
                       alignment: Alignment.centerLeft,
                       child: Text(
-                        productDetails.description,
-                        style: Theme.of(context).textTheme.caption,
+                        ' Price :  ₹ ' + productDetails.price.toString(),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: CustomColor.blackcolor),
                         textAlign: TextAlign.left,
                       ),
                     ),
@@ -345,7 +347,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          productDetails.colories + ' 🔥Calories',
+                          productDetails.colories + ' colories 🔥',
                           style: Theme.of(context).textTheme.subtitle2,
                         ),
                         // Row(
@@ -423,10 +425,10 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                         //       //   size: 18,
                         //       // ),
 
-                        //       // Text(
-                        //       //   productDetails.rating.toString(),
-                        //       //   style: CustomThemeData().drawerStyle(),
-                        //       // ),
+                        Text(
+                          productDetails.rating.toString(),
+                          style: CustomThemeData().drawerStyle(),
+                        ),
                         //     ],
                         //   ),
                         // ),
@@ -473,8 +475,8 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                     },
                                     child: Container(
                                       margin: const EdgeInsets.only(right: 15),
-                                      width: size.width * 0.1,
-                                      height: size.height * 0.05,
+                                      width: size.width* 0.1,
+                                      height: size.height* 0.05,
                                       decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(8),
@@ -499,10 +501,11 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                     SizedBox(
                       height: size.height * 0.03,
                     ),
-                    Container(
-                        width: size.width,
-                        alignment: Alignment.centerLeft,
-                        child: const Text('Product Review')),
+
+                    // Container(
+                    //     width: size.width,
+                    //     alignment: Alignment.centerLeft,
+                    //     child: const Text('Product Review')),
                     Column(
                         children: List.generate(
                       productDetails.review.length,

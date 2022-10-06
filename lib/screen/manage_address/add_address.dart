@@ -172,7 +172,11 @@ class _AddAddressScreenState extends State<AddAddressScreen> {
     print(pMark);
 
     _pincodeController.text = pMark.postalCode;
-    _areaController.text = pMark.thoroughfare;
+    if (pMark.subLocality == null || pMark.subLocality == '') {
+      _areaController.text = pMark.name;
+    } else {
+      _areaController.text = pMark.subLocality;
+    }
     _townController.text = pMark.locality;
     _stateController.text = pMark.administrativeArea;
     _housenumberController.text = pMark.street;

@@ -375,11 +375,12 @@ class ProductProvider with ChangeNotifier {
               : extractedData[i]['image_1024'].toString();
           var image = base64Decode(base64);
           print('bool 2 is loading--->');
+          print('bool 3 is loading--->');
 
           _loadedProduct.add(Product(
               categories: extractedData[i]['categ_id'][0].toString(),
               colories: '40',
-              description: extractedData[i]['description'].toString(),
+              description: extractedData[i]['list_price'].toString(),
               imageUrl: image,
               price: price.toInt(),
               productId: extractedData[i]['id'].toString(),

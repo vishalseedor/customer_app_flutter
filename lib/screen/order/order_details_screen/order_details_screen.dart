@@ -163,13 +163,12 @@ class _OrderDetailsSCreenState extends State<OrderDetailsSCreen> {
                                   child: Container(
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 10),
-                                    decoration: BoxDecoration(
-                                        border: Border.all(
-                                            color: CustomColor.orangecolor),
-                                        borderRadius:
-                                            BorderRadius.circular(10)),
+                                    // decoration: BoxDecoration(
+                                    //     border: Border.all(
+                                    //         color: CustomColor.orangecolor),
+                                    //     borderRadius: BorderRadius.circular(0)),
                                     child: Text(
-                                      'Review Product',
+                                      '',
                                       style:
                                           Theme.of(context).textTheme.caption,
                                     ),

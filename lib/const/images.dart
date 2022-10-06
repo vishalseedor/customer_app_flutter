@@ -16,4 +16,5 @@ class CustomImages {
   static const cashonDelivery = '$path/cash-on-delivery.png';
   static const onlinePayment = '$path/debit-card.png';
   static const seedorlogogif = '$path/seedorgif.gif';
+  static const helpcenter = '$path/customercare.png';
 }

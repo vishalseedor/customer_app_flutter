@@ -6,7 +6,7 @@ import 'package:flutter/cupertino.dart';
 class Favourite with ChangeNotifier {
   final String id;
   final String productTitle;
-  final int productPrice;
+  final String productPrice;
   final Uint8List imageUrl;
   final String productCategory;
 
@@ -21,7 +21,7 @@ class Favourite with ChangeNotifier {
     return Favourite(
         id: jsonData['create_uid'][0].toString(),
         productTitle: jsonData['display_name'].toString(),
-        productPrice: jsonData['cart_qty'],
+        productPrice: jsonData['list_price'],
         imageUrl: json.decode(jsonData['image_1024']),
         productCategory: jsonData['categ_id'][1]);
   }

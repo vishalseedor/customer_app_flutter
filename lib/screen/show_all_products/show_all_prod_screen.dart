@@ -32,7 +32,7 @@ class ShowAllProductScreen extends StatelessWidget {
                 crossAxisCount: 2,
                 childAspectRatio: 1 / 1.5,
                 crossAxisSpacing: size.width * 0.02,
-                mainAxisSpacing: size.height * 0.02),
+                mainAxisSpacing: size.height* 0.02),
             itemCount: product.length,
             itemBuilder: (ctx, index) {
               return ChangeNotifierProvider.value(

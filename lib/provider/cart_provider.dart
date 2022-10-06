@@ -329,9 +329,15 @@ class CartProvider with ChangeNotifier {
 
   double get totalAmount {
     double total = 0.0;
-    for (var value in _cartproduct) {
-      total += double.parse(value.price) * value.quantity;
+    for (var i = 0; i < _cartproduct.length; i++) {
+      total += double.parse(_cartproduct[i].price) * _cartproduct[i].quantity;
+      print('sushalt amount ' + total.toString());
     }
+    // for (var value in _cartproduct) {
+    //   total += double.parse(value.price) * value.quantity;
+    //   print(total.toString() + 'total amopunt');
+    // }
+
     // _cartproduct.forEach((key, value) {
     //   total += value.price * value.quantity;
     // });
@@ -374,7 +380,7 @@ class CartProvider with ChangeNotifier {
 
   String get totalprice {
     double totalCast = 0.0;
-    totalCast = totalAmount + shippingcharge + totalTax;
+    totalCast = totalAmount + totalTax;
 
     // print('success total' + totalCast.toString());
 
@@ -402,7 +408,9 @@ class CartProvider with ChangeNotifier {
       // @required double price,
       // @required int index,
       // @required Uint8List imageUrl,
-      @required int quantity}) {
+      @required int quantity,
+      String title,
+      int imageUrl}) {
     _cartproduct.indexWhere((element) => element.id == id);
     quantity + 1;
     notifyListeners();

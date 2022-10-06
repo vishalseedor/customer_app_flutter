@@ -26,7 +26,13 @@ class SuccessfullPasswordScreen extends StatelessWidget {
               const CircleAvatar(
                 radius: 40,
                 backgroundColor: CustomColor.orangecolor,
-                child: Center(child: Text('LOGO')),
+                child: Center(
+                    child: Text(
+                  'LOGO',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w900,
+                      color: CustomColor.whitecolor),
+                )),
               ),
               Container(
                 alignment: Alignment.center,

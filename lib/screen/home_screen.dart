@@ -39,7 +39,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  
   // final GlobalKey<ScaffoldState> _keyScaffold = GlobalKey();
   final TextEditingController _searchController = TextEditingController();
   bool inits = true;
@@ -60,9 +59,9 @@ class _HomeScreenState extends State<HomeScreen> {
     //     print(isLoadings.toString() + ' timer All data is loading -- >>');
     //   });
     // });
-      final data = Provider.of<UserDetails>(context, listen: false);
+    final data = Provider.of<UserDetails>(context, listen: false);
 
-      data.getAllDetails();
+    data.getAllDetails();
 
     Provider.of<ProductProvider>(context, listen: false)
         .valuePart(context: context);
@@ -224,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             favProd.isLoading) {
                         } else {
                           _searchController.text.toLowerCase();
-    
+
                           setState(() {
                             _searchList = product.searchQuery(value);
                           });

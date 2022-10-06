@@ -20,6 +20,7 @@ class Product with ChangeNotifier {
   final List<Review> review;
   bool isFavourite = false;
   bool isCart = false;
+  bool isSelect = false;
 
   Product(
       {@required this.productId,
@@ -37,6 +38,7 @@ class Product with ChangeNotifier {
       @required this.review,
       this.isCart = false,
       this.isFavourite = false,
+      this.isSelect = false,
       String startprice,
       String endprice});
 

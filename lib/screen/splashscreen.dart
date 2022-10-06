@@ -52,6 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
+      backgroundColor: CustomColor.darkred,
       body: Stack(
         alignment: Alignment.bottomCenter,
         children: [
@@ -60,19 +61,23 @@ class _SplashScreenState extends State<SplashScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Container(
-                  height: size.height * 0.13,
-                  width: size.width * 0.25,
-                  decoration: const BoxDecoration(
-                      color: CustomColor.blackcolor,
-                      shape: BoxShape.rectangle,
-                      image: DecorationImage(
-                          image: AssetImage(CustomImages.seedorlogogif),
-                          fit: BoxFit.cover)),
-                  // child: Image.asset(
-                  //   CustomImages.seedorLogo,
-                  //   fit: BoxFit.fill,
-                  // ),
-                ),
+                  alignment: Alignment.bottomCenter,
+                  child: CircleAvatar(
+                    backgroundColor: CustomColor.whitecolor,
+                    radius: 80,
+                    backgroundImage: AssetImage(CustomImages.seedorlogogif),
+                  ),
+                )
+                // Container(
+                //   height: size.height * 0.15,
+                //   width: size.width * 0.26,
+                //   decoration: const BoxDecoration(
+                //       color: CustomColor.blackcolor,
+                //       shape: BoxShape.rectangle,
+                //       image: DecorationImage(
+                //           image: AssetImage(CustomImages.seedorlogogif),
+                //           fit: BoxFit.cover)),
+                // ),
               ],
             ),
           ),
@@ -80,7 +85,7 @@ class _SplashScreenState extends State<SplashScreen> {
             bottom: size.height * 0.1,
             child: const Text('CUSTOMER APP',
                 style: TextStyle(
-                    color: CustomColor.blackcolor,
+                    color: CustomColor.whitecolor,
                     fontSize: 20,
                     fontWeight: FontWeight.w900)),
           ),

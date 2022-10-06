@@ -97,6 +97,7 @@ class OrderProvider with ChangeNotifier {
             print(addrData);
             // print('address data val -->>' + addrData.toList().toString());
             _cartData = [];
+
             for (var j = 0; j < decoded['Order']['LineItems'].length; j++) {
               _cartData.add(CartData(
                   id: decoded['Order']['LineItems'][j]['productid'].toString(),
@@ -193,6 +194,7 @@ class OrderProvider with ChangeNotifier {
           "userid": data.id
         }
       });
+
       print(body);
 
       var response = await http.post(

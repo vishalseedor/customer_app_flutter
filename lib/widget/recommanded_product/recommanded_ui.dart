@@ -262,13 +262,13 @@ class _RecommandedDesignState extends State<RecommandedDesign> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(13),
-              child: AutoSizeText(
-                '  ${product.colories} 🔥Calories',
-                style: Theme.of(context).textTheme.caption,
-              ),
-            ),
+            // Padding(
+            //   padding: const EdgeInsets.all(13),
+            //   child: AutoSizeText(
+            //     '  ${product.colories} 🔥Calories',
+            //     style: Theme.of(context).textTheme.caption,
+            //   ),
+            // ),
           ],
         ),
       ),

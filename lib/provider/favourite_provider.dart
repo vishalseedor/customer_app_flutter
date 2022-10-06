@@ -112,7 +112,7 @@ class FavouriteProvider with ChangeNotifier {
           loadData.add(Favourite(
             id: jsonData[i]['id'].toString(),
             productTitle: jsonData[i]['display_name'].toString(),
-            productPrice: jsonData[i]['cart_qty'],
+            productPrice: jsonData[i]['list_price'].toString(),
             imageUrl: image,
             productCategory: jsonData[i]['categ_id'][1].toString(),
           ));
@@ -337,7 +337,7 @@ class FavouriteProvider with ChangeNotifier {
           () => Favourite(
               id: DateTime.now().microsecond.toString(),
               productTitle: title,
-              productPrice: price,
+              productPrice: price.toString(),
               imageUrl: null,
               productCategory: subtitle));
     }

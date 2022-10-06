@@ -98,7 +98,7 @@ class AuthProvider with ChangeNotifier {
           Uri.parse('http://eiuat.seedors.com:8290/customer-app/login'),
           headers: header,
           body: body);
-      print('http://eiuat.seedors.com:8290/customer-app/login'); 
+      print('http://eiuat.seedors.com:8290/customer-app/login');
       print(response.body.toString() + 'wefjoisdfidhivhdli');
       var jsonData = json.decode(response.body);
       if (response.statusCode == 200) {

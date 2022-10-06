@@ -60,8 +60,7 @@ class CustomThemeData {
               color: CustomColor.blackcolor,
               fontSize: 16,
               fontWeight: FontWeight.bold),
-              headline5: TextStyle(fontSize: 15,color: CustomColor.grey500)
-              ),
+          headline5: TextStyle(fontSize: 15, color: CustomColor.grey500)),
     );
   }
 

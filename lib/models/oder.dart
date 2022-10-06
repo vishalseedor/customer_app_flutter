@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/cupertino.dart';
 import 'package:food_app/models/address/address.dart';
 import 'package:food_app/models/cart.dart';
@@ -12,6 +14,7 @@ class OrderModel with ChangeNotifier {
   final String grandTotal;
   final String payment;
   final double shipping;
+  final Uint8List imageUrl;
   String deliveryStatus;
   final String datetime;
 
@@ -26,5 +29,6 @@ class OrderModel with ChangeNotifier {
     @required this.shipping,
     @required this.deliveryStatus,
     @required this.address,
+    @required this.imageUrl,
   });
 }
